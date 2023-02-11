@@ -1,0 +1,72 @@
+import ssl
+import datetime
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+
+# Prompt the user for the file with th elist of domains
+file_name = input("Enter the name of the file containing the domain list: ")
+
+# Open the file containing the list of domains
+try:
+    with open(f'{file_name}', 'r') as domain_file:
+        # Read the list of domains from the file
+        domains = domain_file.read().splitlines()
+except Exception as e:
+    # If there's an error opening the domain list file, print an error message
+    print(f"Error opening domain list file: {e}")
+    exit(1)
+
+# Open a file to write the output to
+try:
+    with open('ssl_expiry.txt', 'w') as out_file:
+
+        # Write the headings
+        now = datetime.datetime.now()
+        header = 'SSL certificates for domains checked on '
+        timestamp = now.strftime("%Y-%m-%d %H:%M")
+        separator = '\n---------------------------------------------------'
+        print(f'{header:<40} {timestamp} {separator}')
+        out_file.write(f'{header:<40} {timestamp} {separator}\n')
+
+        # Loop through each domain
+        for domain in domains:
+            # Create a flag to indicate if the certificate was successfully retrieved
+            success = False
+            
+            try:
+                # Get the SSL certificate for the domain
+                cert = ssl.get_server_certificate((domain, 443))
+
+                # Load the SSL certificate into a cryptography object
+                cert_obj = x509.load_pem_x509_certificate(cert.encode(), default_backend())
+
+                # Get the expiration date of the SSL certificate
+                expiry_date = cert_obj.not_valid_after
+
+                # Get the current date and time
+                current_datetime = datetime.datetime.utcnow()
+
+                # Calculate the difference between the current date and the expiration date
+                expiry_difference = expiry_date - current_datetime
+                
+                # Set the flag to indicate success
+                success = True
+            except Exception as e:
+                print(f'{domain:<51} #error: {e}')
+                out_file.write(f'{domain:<51} #error: {e}\n')
+            
+            if success:
+                # If the difference is negative, the SSL certificate has expired, so add an exclamation
+                if expiry_difference.days < 0:
+                    output = f'{domain:<40} {expiry_date.strftime("%Y-%m-%d")} !expired\n'
+                # If the difference is less than 30 days, add an asterisk
+                elif expiry_difference.days < 30:
+                    output = f'{domain:<40} {expiry_date.strftime("%Y-%m-%d")} *30 days\n'
+                # Otherwise, just write the domain name and expiration date
+                else:
+                    output = f'{domain:<40} {expiry_date.strftime("%Y-%m-%d")}\n'
+                    
+                print(output, end='')
+                out_file.write(output)
+except Exception as e:
+    print(f'Error opening output file: {e}')
