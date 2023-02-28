@@ -10,7 +10,7 @@ file_name = input("Enter the name of the file containing the domain list: ")
 try:
     with open(f'{file_name}', 'r') as domain_file:
         # Read the list of domains from the file
-        domains = domain_file.read().splitlines()
+        domains = [line.strip() for line in domain_file if line.strip() and not line.startswith("#")]
 except Exception as e:
     # If there's an error opening the domain list file, print an error message
     print(f"Error opening domain list file: {e}")
@@ -32,7 +32,7 @@ try:
         for domain in domains:
             # Create a flag to indicate if the certificate was successfully retrieved
             success = False
-            
+
             try:
                 # Get the SSL certificate for the domain
                 cert = ssl.get_server_certificate((domain, 443))
@@ -48,7 +48,7 @@ try:
 
                 # Calculate the difference between the current date and the expiration date
                 expiry_difference = expiry_date - current_datetime
-                
+
                 # Set the flag to indicate success
                 success = True
             except Exception as e:
@@ -65,7 +65,7 @@ try:
                 # Otherwise, just write the domain name and expiration date
                 else:
                     output = f'{domain:<40} {expiry_date.strftime("%Y-%m-%d")}\n'
-                    
+
                 print(output, end='')
                 out_file.write(output)
 except Exception as e:
