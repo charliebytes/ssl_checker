@@ -3,7 +3,7 @@ import datetime
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 
-# Prompt the user for the file with th elist of domains
+# Prompt the user for the file with the list of domains
 file_name = input("Enter the name of the file containing the domain list: ")
 
 # Open the file containing the list of domains

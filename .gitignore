@@ -1,5 +1,6 @@
-# Test file
+# Testing files
 domain_list.txt
+ssl_expiry.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
