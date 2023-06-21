@@ -23,7 +23,8 @@ This script requires Python 3.x and the following Python libraries:
 ## Installation
 
 1. Ensure that Python 3 is installed on your system.
-2. Install the `cryptography` library with pip:
+2. Install the required Python package with pip:
+
     ```bash
     pip install cryptography
     ```
@@ -32,7 +33,7 @@ This script requires Python 3.x and the following Python libraries:
 
 1. Install the required libraries: `ssl`, `datetime`, and `cryptography`.
 2. Place your list of domains in a text file, with each domain on a separate line.
-3. Run the script by entering the following command in your console: `python ssl_certificate_expiry.py`
+3. Run the script by entering the following command in your console: `python ssl_checker.py`
 4. When prompted, enter the name of the file containing the list of domains.
 5. The script will echo the results to the console.
 6. The script will write the results to a file named `ssl_expiry.txt` in the same directory.
