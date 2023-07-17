@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Test and output files
+test.txt
+domains.txt
+ssl_expiry.txt
+test.csv
+domains.csv
+ssl_expiry.csv
