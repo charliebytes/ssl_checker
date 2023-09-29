@@ -2,7 +2,7 @@
 
 This is a simple Python script that takes a list of domains as input and checks the expiry dates of their SSL certificates. The domains are read from a file and the script writes the results to the console and also to a file named `ssl_expiry.txt`.
 
-## How it Works
+## How it works
 
 The script uses the `ssl` and `datetime` libraries from the Python standard library, as well as the `cryptography` library to check the expiry dates of the SSL certificates.
 
