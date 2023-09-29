@@ -1,3 +1,4 @@
+import socket
 import ssl
 import datetime
 from cryptography import x509
@@ -34,11 +35,16 @@ try:
             success = False
             
             try:
-                # Get the SSL certificate for the domain
-                cert = ssl.get_server_certificate((domain, 443))
-
+                # Establish a socket connection to the domain on port 443
+                sock = socket.create_connection((domain, 443))
+                # Wrap the socket with an SSL context
+                context = ssl.create_default_context()
+                with context.wrap_socket(sock, server_hostname=domain) as sslsock:
+                    # Get the SSL certificate from the server
+                    cert = sslsock.getpeercert(binary_form=True)
+                
                 # Load the SSL certificate into a cryptography object
-                cert_obj = x509.load_pem_x509_certificate(cert.encode(), default_backend())
+                cert_obj = x509.load_der_x509_certificate(cert, default_backend())
 
                 # Get the expiration date of the SSL certificate
                 expiry_date = cert_obj.not_valid_after
