@@ -58,9 +58,15 @@ try:
                 # Set the flag to indicate success
                 success = True
             except Exception as e:
-                print(f'{domain:<51} #error: {e}')
-                out_file.write(f'{domain:<51} #error: {e}\n')
-            
+                error_message = str(e)
+                # Remove the string from the start of the error message
+                if error_message.startswith("[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:"):
+                    error_message = error_message[len("[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:"):]
+                # Remove the string from the end of the error message
+                error_message = error_message.split(" (_ssl.c:1002)")[0]
+                print(f'{domain:<40} # ERROR  #{error_message}')
+                out_file.write(f'{domain:<40} # ERROR  #{error_message}\n')
+
             if success:
                 # If the difference is negative, the SSL certificate has expired, so add an exclamation
                 if expiry_difference.days < 0:
