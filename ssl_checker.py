@@ -50,7 +50,7 @@ try:
                 expiry_date = cert_obj.not_valid_after_utc
 
                 # Get the current date and time
-                current_datetime = datetime.datetime.now(datetime.UTC)
+                current_datetime = datetime.datetime.now(datetime.timezone.utc)
 
                 # Calculate the difference between the current date and the expiration date
                 expiry_difference = expiry_date - current_datetime
