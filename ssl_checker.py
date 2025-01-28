@@ -48,6 +48,7 @@ try:
 
                 # Get the expiration date of the SSL certificate
                 expiry_date = cert_obj.not_valid_after_utc
+                expiry_date = cert_obj.not_valid_after_utc
 
                 # Get the current date and time
                 current_datetime = datetime.datetime.now(datetime.timezone.utc)
