@@ -22,7 +22,7 @@ try:
     with open('ssl_expiry.txt', 'w') as out_file:
 
         # Write the headings
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(datetime.timezone.utc)
         header = 'SSL certificates for domains checked on '
         timestamp = now.strftime("%Y-%m-%d %H:%M")
         separator = '\n---------------------------------------------------'
@@ -47,7 +47,6 @@ try:
                 cert_obj = x509.load_der_x509_certificate(cert, default_backend())
 
                 # Get the expiration date of the SSL certificate
-                expiry_date = cert_obj.not_valid_after_utc
                 expiry_date = cert_obj.not_valid_after_utc
 
                 # Get the current date and time
