@@ -47,10 +47,10 @@ try:
                 cert_obj = x509.load_der_x509_certificate(cert, default_backend())
 
                 # Get the expiration date of the SSL certificate
-                expiry_date = cert_obj.not_valid_after
+                expiry_date = cert_obj.not_valid_after_utc
 
                 # Get the current date and time
-                current_datetime = datetime.datetime.utcnow()
+                current_datetime = datetime.datetime.now(datetime.UTC)
 
                 # Calculate the difference between the current date and the expiration date
                 expiry_difference = expiry_date - current_datetime
